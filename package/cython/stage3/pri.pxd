@@ -1,0 +1,1 @@
+cdef list prime(int nb_primes)

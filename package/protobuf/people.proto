@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+import "phone.proto";
+
+package com.hello.world;
+
+message People{
+  string name = 1;
+  int32 age = 2;
+}
+
+message Information {
+  int32 id = 1;
+  string address = 2;
+  double bid = 3;
+  bool is_shortsightedness = 4;
+  repeated string hobby = 5;
+  map<string, int32> friends = 6;
+  People people = 7;
+  Phone phone = 8;
+}

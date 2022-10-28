@@ -1,0 +1,21 @@
+syntax = "proto3";
+package ot.network;
+
+message Empty {
+}
+
+message Bytes {
+  bytes data = 1;
+}
+
+message Message {
+  oneof content {
+    Empty empty = 1;
+    Bytes bytes = 2;
+  }
+}
+
+service PseudoDuplexChannel {
+  rpc recv (Empty) returns (Message);
+  rpc send (Message) returns (Empty);
+}
