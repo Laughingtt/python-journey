@@ -1,0 +1,11 @@
+searchSpaceFile: search_space.json
+trialCommand: python3 main.py
+trialConcurrency: 1
+maxTrialNumber: 100
+maxExperimentDuration: 1h
+tuner:
+  name: TPE
+  classArgs:
+    optimize_mode: maximize
+trainingService:  # For other platforms, check mnist-pytorch example
+  platform: local
