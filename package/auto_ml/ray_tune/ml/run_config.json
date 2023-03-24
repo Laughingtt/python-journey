@@ -1,0 +1,17 @@
+{
+  "tune_config": {
+    "mode": "max",
+    "num_samples": 100,
+    "max_concurrent_trials": 4,
+    "search_alg": "random search",
+    "scheduler": "FIFO"
+  },
+  "run_config": {
+    "local_dir": null,
+    "stop": {
+      "timeout": 30,
+      "metric": "score"
+    },
+    "callbacks": null
+  }
+}

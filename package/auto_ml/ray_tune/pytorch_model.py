@@ -65,6 +65,7 @@ def test(model, data_loader):
 
 
 def train_mnist(config):
+    print("config",config)
     # Data Setup
     mnist_transforms = transforms.Compose(
         [transforms.ToTensor(),

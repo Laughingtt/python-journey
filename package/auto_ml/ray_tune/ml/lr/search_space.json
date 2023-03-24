@@ -1,0 +1,6 @@
+{
+    "C": {"_type":"uniform","_value":[0.1, 1]},
+    "solver": {"_type":"choice","_value":["saga", "liblinear"]},
+    "penalty": {"_type":"choice","_value":["l1", "l2"]},
+    "tol": {"_type":"uniform","_value":[0.0001, 0.001]}
+}
