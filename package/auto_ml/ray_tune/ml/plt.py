@@ -13,11 +13,12 @@ def plt_scatter(score_path):
     # 绘制图形
     plt.scatter(x, y, s=10, alpha=0.8)
 
-    plt.scatter(x[0], y[0], color='red', s=50)
+    plt.scatter(x[0], y[0], color='red', s=20)
+    plt.annotate("max score:{}".format(y[0]), xy=(x[0], y[0]), xytext=(x[0], y[0] + 0.05))
 
-    plt.title('Mean Test Accuracy')
-    plt.xlabel('x')
-    plt.ylabel('y')
+    plt.title('Test Score')
+    plt.xlabel('train id')
+    plt.ylabel('score')
 
     plt.xlim([0, len(score_df) + 2])
     plt.ylim([0, 1])
