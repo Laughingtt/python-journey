@@ -2,21 +2,30 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-score_df = pd.read_csv("score_df.csv")
 
-# 生成x和y值
-x = score_df["train_id"]
-y = score_df["score"]
+def plt_scatter(score_path):
+    score_df = pd.read_csv(score_path)
 
-# 绘制图形
-plt.scatter(x, y, s=10, alpha=0.8)
-plt.title('Mean Test Accuracy')
-plt.xlabel('x')
-plt.ylabel('y')
+    # 生成x和y值
+    x = score_df["train_id"].to_numpy()
+    y = score_df["score"].to_numpy()
 
-plt.xlim([0, len(score_df) + 2])
-plt.ylim([0, 1])
+    # 绘制图形
+    plt.scatter(x, y, s=10, alpha=0.8)
 
-plt.xticks(np.arange(0, len(score_df) + 2, 5))
+    plt.scatter(x[0], y[0], color='red', s=50)
 
-plt.show()
+    plt.title('Mean Test Accuracy')
+    plt.xlabel('x')
+    plt.ylabel('y')
+
+    plt.xlim([0, len(score_df) + 2])
+    plt.ylim([0, 1])
+
+    plt.xticks(np.arange(0, len(score_df) + 2, 5))
+
+    plt.show()
+
+
+if __name__ == '__main__':
+    plt_scatter("score_df.csv")

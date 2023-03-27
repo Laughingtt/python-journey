@@ -15,7 +15,7 @@ class DataBase(abc.ABC):
         raise NotImplementedError
 
 
-class TabularMinist(DataBase):
+class TabularMinimal(DataBase, ABC):
 
     def __init__(self, n_samples=1000,
                  n_features=50,

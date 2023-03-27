@@ -22,24 +22,24 @@ search_space = {
     "tol": tune.uniform(0.0001, 0.001)
 }
 
-from datasets import TabularMinist
+from datasets import TabularMinimal
 from search_alg import SearchAlg
 
-minist = TabularMinist()
+minist = TabularMinimal()
 search_alg = SearchAlg().search_algo
 
 
 # 1. Define an objective function.
-def train(config):
+def train(config, data):
     parameters = get_parameters()
     params = {k: v for k, v in config.items() if k in parameters}
     clf = LogisticRegression(**params)
-    obj = clf.fit(minist.x_train, minist.y_train)
-    accuracy = obj.score(minist.x_test, minist.y_test)
+    obj = clf.fit(data.x_train, data.y_train)
+    accuracy = obj.score(data.x_test, data.y_test)
     return {"score": accuracy}
 
 
-tuner = tune.Tuner(train,
+tuner = tune.Tuner(tune.with_parameters(train, data=minist),
                    param_space=search_space,
                    tune_config=tune.TuneConfig(mode="max",
                                                num_samples=100,
@@ -57,12 +57,4 @@ result_grid = tuner.fit()
 print(result_grid)
 
 print("end run time is {}".format(time.time() - t0))
-metrics_dataframe = result_grid.get_dataframe()
-metrics_dataframe["train_id"] = metrics_dataframe.index + 1
-metric_key_ = ["config/{}".format(k) for k in search_space.keys()]
 
-score_df = metrics_dataframe[["train_id", "score"] + metric_key_]
-
-score_df.sort_values("score", ascending=False, inplace=True)
-
-score_df.to_csv("score_df.csv", index=False)

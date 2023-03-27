@@ -78,5 +78,5 @@ if __name__ == '__main__':
 
     d1.operation()
 
-    d2 = DecoratorB(d1)
-    d2.operation()
+    # d2 = DecoratorB(d1)
+    # d2.operation()
