@@ -1,5 +1,6 @@
 from abc import ABC
 import warnings
+from torch.utils.data import Dataset
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import make_classification
 
@@ -30,6 +31,8 @@ class TabularMinimal(DataBase, ABC):
             class_sep=class_sep,
             random_state=random_state
         )
+        self.train_size = n_samples - test_size
+        self.test_size = test_size
         self.x_train, self.x_test, self.y_train, self.y_test = \
             train_test_split(X, y, test_size=test_size, random_state=random_state)
 
@@ -54,5 +57,35 @@ class TabularMinimal(DataBase, ABC):
         return self.x_test
 
 
+class TabularDataset(Dataset):
+    def __init__(self, x_data, label):
+        self.x_data = x_data
+        self.label = label
+
+    def __len__(self):
+        return len(self.label)
+
+    def __getitem__(self, idx):
+        features = self.x_data[idx]
+        label = self.label[idx]
+        return features, label
+
+
+def load_digits_data():
+    '''Load dataset, use 20newsgroups dataset'''
+    from sklearn.model_selection import train_test_split
+    from sklearn.datasets import load_digits
+    from sklearn.preprocessing import StandardScaler
+    digits = load_digits(n_class=2)
+    X_train, X_test, y_train, y_test = train_test_split(
+        digits.data, digits.target, random_state=99, test_size=0.25)
+
+    ss = StandardScaler()
+    X_train = ss.fit_transform(X_train)
+    X_test = ss.transform(X_test)
+
+    return X_train, X_test, y_train, y_test
+
+
 if __name__ == '__main__':
-    a = DataBase()
+    a = load_digits_data()

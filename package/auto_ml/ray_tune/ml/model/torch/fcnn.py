@@ -20,7 +20,7 @@ class FCNN(nn.Module):
 
     """
 
-    def __init__(self, input_size, hidden_size, n_classes, p, device):
+    def __init__(self, input_size, hidden_size, n_classes=2, p=0.5, device="cpu"):
         super(FCNN, self).__init__()
 
         self.input_size = input_size
