@@ -20,33 +20,33 @@ class AbstractProductA(metaclass=ABCMeta):
 class LogisticRegression(AbstractProductA):
     @staticmethod
     def create():
-        from model.lr.api import train
+        from saas.models.classification_logisticregression.api import train
         return train
 
     def params_space(self):
-        from model.lr.api import search_space
+        from saas.models.classification_logisticregression.api import search_space
         return search_space()
 
 
 class Xgboost(AbstractProductA):
     @staticmethod
     def create():
-        from model.xgb.api import train
+        from saas.models.classification_xgboost.api import train
         return train
 
     def params_space(self):
-        from model.xgb.api import search_space
+        from saas.models.classification_xgboost.api import search_space
         return search_space()
 
 
 class RandomForest(AbstractProductA, ABC):
     @staticmethod
     def create():
-        from model.rf.api import train
+        from saas.models.classification_randomforest.api import train
         return train
 
     def params_space(self):
-        from model.rf.api import search_space
+        from saas.models.classification_randomforest.api import search_space
         return search_space()
 
 

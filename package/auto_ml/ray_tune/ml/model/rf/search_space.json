@@ -1,0 +1,5 @@
+{
+    "criterion": {"_type":"choice","_value":["gini", "entropy"]},
+    "n_estimators": {"_type":"randint","_value":[50, 200]},
+    "max_depth": {"_type":"randint","_value":[3,10]}
+}

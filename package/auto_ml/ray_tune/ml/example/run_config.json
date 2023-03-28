@@ -1,7 +1,7 @@
 {
   "tune_config": {
     "mode": "max",
-    "num_samples": 50,
+    "num_samples": 15,
     "max_concurrent_trials": 2,
     "search_alg": null,
     "scheduler": "FIFO"
@@ -13,5 +13,17 @@
       "metric": "score"
     },
     "callbacks": null
+  },
+  "algo_config": {
+    "model_type": "classifier",
+    "include": [
+      "LogisticRegression",
+      "Xgboost"
+    ],
+    "optional_algorithm": [
+      "LogisticRegression",
+      "Xgboost",
+      "RandomForest"
+    ]
   }
 }

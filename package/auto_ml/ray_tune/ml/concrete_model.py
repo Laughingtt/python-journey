@@ -3,11 +3,7 @@ import api
 from abc import ABCMeta, abstractmethod
 
 
-class ModelState(object):
-    def __init__(self):
-        self.logisticregression = "LogisticRegression"
-        self.xgboost = "Xgboost"
-        self.randomforest = "RandomForest"
+class ModelState(api.ModelStateConf):
 
     def keys(self):
         return self.__dict__.keys()
@@ -57,9 +53,3 @@ class ConcreteModelFactory(Director):
     def create_search_space(self):
         self.__init_model()
         return self.__model.params_space()
-
-
-if __name__ == '__main__':
-    c = ConcreteModelFactory("LogisticRegression")
-    _model = c.create_model()
-    print(_model)

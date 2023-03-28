@@ -79,8 +79,8 @@ class SubmitTask(object):
 
 
 if __name__ == '__main__':
-    s = SubmitTask("Xgboost", "example/run_config.json")
+    s = SubmitTask("RandomForest", "example/run_config.json")
     s.fit()
-    s.to_csv("score_df.csv")
-    s.plt_result("score_df.csv")
+    s.to_csv("example/score_df.csv")
+    s.plt_result("example/score_df.csv")
     print(s.get_dataframe())
