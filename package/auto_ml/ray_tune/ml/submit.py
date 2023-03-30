@@ -4,7 +4,7 @@ from ray import tune, air
 from ray.tune.stopper import (CombinedStopper, MaximumIterationStopper, TrialPlateauStopper, TimeoutStopper)
 
 from datasets import TabularMinimal
-from plt import plt_scatter
+from plt import plt_scatter, plt_nn_learning_curve
 from concrete_model import ConcreteModelFactory
 
 
@@ -39,11 +39,18 @@ class SubmitTask(object):
         tune_config_obj = tune.TuneConfig(**tune_config)
 
         run_config = self.run_config.get("run_config", {})
-        tune_run_obj = air.RunConfig(
-            stop=CombinedStopper(
-                TrialPlateauStopper(metric=run_config["stop"]["metric"]),
-                TimeoutStopper(timeout=run_config["stop"]["timeout"]))
-        )
+
+        stopper = []
+        for stop_n, stop_o in run_config["stop"].items():
+            if stop_o.get("is_check", False) is False:
+                continue
+            if stop_n == "timeout_stopper":
+                stopper.append(TimeoutStopper(timeout=stop_o.get("timeout", 3600)))
+            elif stop_n == "trial_plateau_stopper":
+                stopper.append(TrialPlateauStopper(metric=stop_o.get("metric", ""),
+                                                   num_results=stop_o.get("num_results", 5)))
+
+        tune_run_obj = air.RunConfig(stop=CombinedStopper(*stopper))
 
         return tune_config_obj, tune_run_obj
 
@@ -73,14 +80,16 @@ class SubmitTask(object):
 
         score_df.to_csv(score_path, index=False)
 
-    @staticmethod
-    def plt_result(score_path):
+    def plt_result(self, score_path):
         plt_scatter(score_path)
+        if self.model_name.lower() == "fcnn":
+            plt_nn_learning_curve(self.result_grid)
 
 
 if __name__ == '__main__':
-    s = SubmitTask("RandomForest", "example/run_config.json")
+    s = SubmitTask("FCNN", "example/run_config.json")
     s.fit()
     s.to_csv("example/score_df.csv")
     s.plt_result("example/score_df.csv")
+
     print(s.get_dataframe())

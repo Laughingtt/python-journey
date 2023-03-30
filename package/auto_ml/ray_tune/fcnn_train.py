@@ -6,55 +6,15 @@ from ray.tune.stopper import TimeoutStopper
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 import torch.nn.functional as F
-from model.torch.fcnn import FCNN
+from model.torch.fcnn.fcnn import FCNN
 from datasets import TabularDataset
 from ray import air, tune
 from ray.tune import ResultGrid
 from ray.tune.schedulers import ASHAScheduler
+from model.torch.early_stop import EarlyStopping
 
 loss_func = torch.nn.CrossEntropyLoss()
 
-class EarlyStopping():
-    """
-    Early stopping to stop the training when the loss does not improve after
-    certain epochs.
-    """
-
-    def __init__(self, patience=5, min_delta=0):
-        """
-        :param patience: how many epochs to wait before stopping when loss is
-               not improving
-        :param min_delta: minimum difference between new loss and old loss for
-               new loss to be considered as an improvement
-        """
-        self.patience = patience
-        self.min_delta = min_delta
-        self.counter = 0
-        self.best_loss = None
-        self.early_stop = False
-
-    def __call__(self, val_loss):
-        if self.best_loss == None:
-            self.best_loss = val_loss
-        elif self.best_loss - val_loss > self.min_delta:
-            self.best_loss = val_loss
-            # reset counter if validation loss improves
-            self.counter = 0
-        elif self.best_loss - val_loss < self.min_delta:
-            self.counter += 1
-            # print(f"INFO: Early stopping counter {self.counter} of {self.patience}")
-            if self.counter >= self.patience:
-                print('INFO: Early stopping')
-                self.early_stop = True
-
-
-# Data Setup
-from datasets import TabularMinimal, load_digits_data
-
-mini_data = TabularMinimal()
-
-
-# X_train, X_test, y_train, y_test = load_digits_data()
 
 def train(model, optimizer, train_loader):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -87,17 +47,23 @@ def test(model, data_loader):
     return correct / total
 
 
-def train_mnist(config):
+# Data Setup
+from datasets import TabularMinimal
+
+mini_data = TabularMinimal()
+
+
+def train_mnist(config, dataset):
     print("config", config)
 
     train_loader = DataLoader(
-        TabularDataset(mini_data.x_train, mini_data.y_train), batch_size=mini_data.train_size, shuffle=True)
+        TabularDataset(dataset.x_train, mini_data.y_train), batch_size=dataset.train_size, shuffle=True)
     test_loader = DataLoader(
-        TabularDataset(mini_data.x_test, mini_data.y_test), batch_size=mini_data.test_size, shuffle=True)
+        TabularDataset(dataset.x_test, mini_data.y_test), batch_size=dataset.test_size, shuffle=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    model = FCNN(input_size=mini_data.x_train.shape[1],
+    model = FCNN(input_size=dataset.x_train.shape[1],
                  hidden_size=[config["hidden_size"] for i in range(config["hidden_length"])], n_classes=2)
     model.to(device)
 
@@ -105,7 +71,7 @@ def train_mnist(config):
         model.parameters(), lr=config["lr"], momentum=config["momentum"])
     print("epochs:", config["epochs"])
     early_stopping = EarlyStopping(patience=10)
-    loss_list =[]
+    loss_list = []
     for i in range(config["epochs"]):
         loss = train(model, optimizer, train_loader)
         acc = test(model, test_loader)
@@ -124,8 +90,8 @@ def train_mnist(config):
 search_space = {
     "epochs": 100,
     "lr": tune.uniform(0.0001, 0.01),
-    # "momentum": tune.grid_search([0.8, 0.9, 0.99]),
-    "momentum": 0.99,
+    "momentum": tune.grid_search([0.8, 0.9, 0.99]),
+    # "momentum": 0.99,
     "hidden_size": tune.grid_search([128, 256]),
     "hidden_length": tune.randint(1, 4),
 }
@@ -137,7 +103,7 @@ local_dir = "./data"
 exp_name = "test_fcnn"
 
 tuner = tune.Tuner(
-    train_mnist,
+    tune.with_parameters(train_mnist, dataset=mini_data),
     param_space=search_space,
     tune_config=tune.TuneConfig(
         num_samples=5,

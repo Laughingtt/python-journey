@@ -5,6 +5,9 @@ from ray.tune.search.skopt import SkOptSearch
 
 
 class SearchAlg():
+    """
+    TBD
+    """
     def __init__(self, search_name=None, max_concurrent=None):
         self.search_name = search_name
         search_algo = BayesOptSearch()

@@ -1,0 +1,7 @@
+{
+    "epochs": {"_type":"randint","_value":[100,101]},
+    "lr": {"_type":"uniform","_value":[0.0001, 0.01]},
+    "momentum": {"_type":"uniform","_value":[0.9, 0.99]},
+    "hidden_size": {"_type":"grid_search","_value":[128, 256]},
+    "hidden_length": {"_type":"randint","_value":[1, 4]}
+}

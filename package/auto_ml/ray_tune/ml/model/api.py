@@ -20,33 +20,44 @@ class AbstractProductA(metaclass=ABCMeta):
 class LogisticRegression(AbstractProductA):
     @staticmethod
     def create():
-        from saas.models.classification_logisticregression.api import train
+        from model.lr.api import train
         return train
 
     def params_space(self):
-        from saas.models.classification_logisticregression.api import search_space
+        from model.lr.api import search_space
         return search_space()
 
 
 class Xgboost(AbstractProductA):
     @staticmethod
     def create():
-        from saas.models.classification_xgboost.api import train
+        from model.xgb.api import train
         return train
 
     def params_space(self):
-        from saas.models.classification_xgboost.api import search_space
+        from model.xgb.api import search_space
         return search_space()
 
 
 class RandomForest(AbstractProductA, ABC):
     @staticmethod
     def create():
-        from saas.models.classification_randomforest.api import train
+        from model.rf.api import train
         return train
 
     def params_space(self):
-        from saas.models.classification_randomforest.api import search_space
+        from model.rf.api import search_space
+        return search_space()
+
+
+class FCNN(AbstractProductA, ABC):
+    @staticmethod
+    def create():
+        from model.torch.fcnn.api import trainable
+        return trainable
+
+    def params_space(self):
+        from model.torch.fcnn.api import search_space
         return search_space()
 
 
@@ -55,3 +66,4 @@ class ModelStateConf(object):
         self.logisticregression = "LogisticRegression"
         self.xgboost = "Xgboost"
         self.randomforest = "RandomForest"
+        self.fcnn = "FCNN"

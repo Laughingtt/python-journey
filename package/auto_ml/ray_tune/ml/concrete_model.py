@@ -1,5 +1,5 @@
 import sys
-import api
+from model import api
 from abc import ABCMeta, abstractmethod
 
 
