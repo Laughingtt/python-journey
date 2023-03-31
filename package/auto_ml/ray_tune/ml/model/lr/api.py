@@ -1,6 +1,6 @@
 import inspect
 import os
-from utils import _search_space
+from utils.utils import _search_space
 from collections import OrderedDict
 from sklearn.linear_model import LogisticRegression
 

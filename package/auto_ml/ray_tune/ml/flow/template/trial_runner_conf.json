@@ -7,7 +7,7 @@
     "scheduler": "FIFO"
   },
   "run_config": {
-    "local_dir": null,
+    "local_dir": "",
     "stop": {
       "timeout_stopper": {"is_check": true,"timeout": 30},
       "trial_plateau_stopper": {"is_check": false,"metric": "score","num_results": 5}
@@ -16,10 +16,7 @@
   },
   "algo_config": {
     "model_type": "classifier",
-    "include": [
-      "LogisticRegression",
-      "Xgboost"
-    ],
+    "model_name": "RandomForest",
     "optional_algorithm": [
       "LogisticRegression",
       "Xgboost",

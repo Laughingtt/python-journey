@@ -1,7 +1,7 @@
 import inspect
 import os
 from inspect import Parameter
-from utils import _search_space
+from utils.utils import _search_space
 from typing import Dict
 from sklearn.ensemble import RandomForestClassifier
 

@@ -1,0 +1,30 @@
+{
+  "tune_config": {
+    "mode": "max",
+    "num_samples": 25,
+    "max_concurrent_trials": 2,
+    "search_alg": null,
+    "scheduler": "FIFO"
+  },
+  "run_config": {
+    "local_dir": "/Users/tianjian/Projects/python-BasicUsage2/package/auto_ml/ray_tune/ml/example/tmp_result",
+    "stop": {
+      "timeout_stopper": {"is_check": true,"timeout": 30},
+      "trial_plateau_stopper": {"is_check": false,"metric": "score","num_results": 5}
+    },
+    "callbacks": null
+  },
+  "algo_config": {
+    "model_type": "classifier",
+    "model_name": "RandomForest",
+    "include": [
+      "LogisticRegression",
+      "Xgboost"
+    ],
+    "optional_algorithm": [
+      "LogisticRegression",
+      "Xgboost",
+      "RandomForest"
+    ]
+  }
+}

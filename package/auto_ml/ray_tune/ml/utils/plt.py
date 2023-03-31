@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -25,6 +26,43 @@ def plt_scatter(score_path):
 
     plt.xticks(np.arange(0, len(score_df) + 2, 5))
 
+    plt.show()
+
+
+def plt_scatter_all_model(result_path,is_sort=True):
+    score_path = os.listdir(result_path)
+    color_lis = ["green", "blue", "violet", "coral"]
+    type_lsit = []
+    fig = plt.figure(figsize=(12, 10))
+    ax = fig.add_subplot(111)
+    for c, score_p in enumerate(score_path):
+        score_df = pd.read_csv(os.path.join(result_path, score_p))
+
+        # 生成x和y值
+        x = score_df["train_id"].to_numpy()
+        y = score_df["score"].to_numpy()
+        if is_sort is True:
+            x = range(len(y))
+
+        # 绘制图形
+        _type = ax.scatter(x, y, s=8, alpha=0.8, c=color_lis[c])
+        ax.annotate("{}".format(round(y[0], 2)), xy=(x[0], y[0]), xytext=(x[0]-0.1, y[0]))
+
+        type_lsit.append(_type)
+
+    # ax.legend((type_lsit[0], type_lsit[1], type_lsit[2], type_lsit[3]),
+    #           ("DidntLike", "SmallDoses", "LargeDoses", "223"), loc=0)
+
+    ax.legend(tuple(type_lsit), tuple(score_path), loc=4)
+
+    # ax.title('Test Score')
+    # ax.xlabel('train id')
+    # ax.ylabel('score')
+
+    # ax.xlim([0, len(score_df) + 2])
+    # ax.ylim([0, 1])
+
+    # ax.xticks(np.arange(0, len(score_df) + 2, 5))
     plt.show()
 
 
@@ -56,4 +94,5 @@ def plt_nn_learning_curve(results_grad):
 
 
 if __name__ == '__main__':
-    plt_scatter("example/score_df.csv")
+    # plt_scatter("../example/score_df.csv")
+    plt_scatter_all_model("/Users/tianjian/Projects/python-BasicUsage2/package/auto_ml/ray_tune/ml/example/tmp_result")

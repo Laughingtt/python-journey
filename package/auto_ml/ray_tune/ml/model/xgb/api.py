@@ -5,7 +5,7 @@ from saas.log import logger
 from saas.constants import DataType
 from saas.models import Parameters
 from saas.models.dataset import DatasetNonTS
-from utils import _search_space
+from utils.utils import _search_space
 import os
 
 

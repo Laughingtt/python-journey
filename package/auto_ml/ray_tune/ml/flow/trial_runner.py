@@ -1,21 +1,41 @@
 import json
+import os
 from ray import tune, air
 
-from ray.tune.stopper import (CombinedStopper, MaximumIterationStopper, TrialPlateauStopper, TimeoutStopper)
+from ray.tune.stopper import (CombinedStopper, TrialPlateauStopper, TimeoutStopper)
 
 from datasets import TabularMinimal
-from plt import plt_scatter, plt_nn_learning_curve
+from utils.plt import plt_scatter, plt_nn_learning_curve
 from concrete_model import ConcreteModelFactory
 
 
-class SubmitTask(object):
-    def __init__(self, model_name="LogisticRegression", run_config_path=None):
-        self.model_name = model_name
-        self.result_grid = None
-        self.run_config_path = run_config_path
+class TrialRunner(object):
+    def __init__(self, run_config_path=None):
         self.run_config = None
         self.search_space = None
+        self.result_grid = None
+        self.model_name = None
+        self.run_config_path = run_config_path
+        if self.run_config_path is not None:
+            self.__init_param(self.run_config_path)
+
+    def __init_param(self, run_config_path):
+        self.__get_params_json(run_config_path)
+        self.__set_param()
+
+    def __set_param(self):
+        if self.run_config is None:
+            raise KeyError
+        self.algo_config = self.run_config["algo_config"]
+        self.tune_run_config = self.run_config["run_config"]
+        self.tune_config = self.run_config["tune_config"]
+        self.local_dir = self.tune_run_config["local_dir"]
+        self.model_name = self.algo_config["model_name"]
         self.concrete_mode = ConcreteModelFactory(self.model_name)
+
+    def set_run_config(self, run_config):
+        self.run_config = run_config
+        self.__set_param()
 
     def __get_model_callable(self):
         _model = self.concrete_mode.create_model()
@@ -28,20 +48,17 @@ class SubmitTask(object):
     def __get_search_space(self):
         self.search_space = self.concrete_mode.create_search_space()
 
-    def __get_params_json(self):
-        with open(self.run_config_path, "r") as f:
-            params_json = json.load(f)
-        return params_json
+    def __get_params_json(self, run_config_path):
+        if not os.path.exists(run_config_path):
+            raise FileNotFoundError(run_config_path)
+        with open(run_config_path, "r") as f:
+            self.run_config = json.load(f)
 
     def __get_run_config(self):
-        self.run_config = self.__get_params_json()
-        tune_config = self.run_config.get("tune_config", {})
-        tune_config_obj = tune.TuneConfig(**tune_config)
-
-        run_config = self.run_config.get("run_config", {})
+        tune_config_obj = tune.TuneConfig(**self.tune_config)
 
         stopper = []
-        for stop_n, stop_o in run_config["stop"].items():
+        for stop_n, stop_o in self.tune_run_config["stop"].items():
             if stop_o.get("is_check", False) is False:
                 continue
             if stop_n == "timeout_stopper":
@@ -81,15 +98,7 @@ class SubmitTask(object):
         score_df.to_csv(score_path, index=False)
 
     def plt_result(self, score_path):
+
         plt_scatter(score_path)
         if self.model_name.lower() == "fcnn":
             plt_nn_learning_curve(self.result_grid)
-
-
-if __name__ == '__main__':
-    s = SubmitTask("FCNN", "example/run_config.json")
-    s.fit()
-    s.to_csv("example/score_df.csv")
-    s.plt_result("example/score_df.csv")
-
-    print(s.get_dataframe())

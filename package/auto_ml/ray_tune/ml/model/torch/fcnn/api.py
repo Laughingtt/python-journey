@@ -9,7 +9,7 @@ from datasets import TabularDataset
 from model.torch.early_stop import EarlyStopping
 from model.torch.fcnn._train import NNTrainModel
 from model.torch.fcnn.fcnn import FCNN
-from utils import _search_space
+from utils.utils import _search_space
 
 
 def search_space():
