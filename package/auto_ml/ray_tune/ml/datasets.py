@@ -157,7 +157,7 @@ def get_img_data_loader(train_path, test_path, batch_size=64):
     training_data = CustomImageDataset(train_path, transform=train_transform)
     train_dataloader = DataLoader(training_data, batch_size=batch_size, shuffle=True)
 
-    test_data = CustomImageDataset(test_path, transform=train_transform)
+    test_data = CustomImageDataset(test_path, transform=test_transform)
     test_dataloader = DataLoader(test_data, batch_size=batch_size, shuffle=True)
 
     return train_dataloader, test_dataloader
@@ -194,11 +194,18 @@ class CustomImageDataset(Dataset):
         return image, label
 
 
+class ImageDataset(object):
+
+    def __init__(self, train_path, test_path):
+        self.train_path = train_path
+        self.test_path = test_path
+
+
 def get_img_transform():
     train_transform = transforms.Compose([
         transforms.Resize(256),
         transforms.CenterCrop(224),
-        transforms.RandomCrop(32, padding=4),
+        # transforms.RandomCrop(32, padding=4),
         # transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])

@@ -13,7 +13,7 @@ class NNTrainModel:
     def train_func(model, optimizer, train_loader):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         model.train()
-        total_loss = 0
+        total_loss, batch_count = 0, 0
         for batch_idx, (data, target) in enumerate(train_loader):
             data, target = data.to(device), target.to(device)
             optimizer.zero_grad()
@@ -22,7 +22,8 @@ class NNTrainModel:
             total_loss += loss.item()
             loss.backward()
             optimizer.step()
-        return total_loss
+            batch_count += 1
+        return total_loss / batch_count
 
     @staticmethod
     def test_func(model, data_loader):

@@ -4,7 +4,7 @@ from ray import tune, air
 
 from ray.tune.stopper import (CombinedStopper, TrialPlateauStopper, TimeoutStopper)
 
-from datasets import TabularMinimal
+from datasets import TabularMinimal, ImageDataset
 from utils.plt import plt_scatter, plt_nn_learning_curve
 from concrete_model import ConcreteModelFactory
 
@@ -15,6 +15,7 @@ class TrialRunner(object):
         self.search_space = None
         self.result_grid = None
         self.model_name = None
+        self.data_info = None
         self.run_config_path = run_config_path
         if self.run_config_path is not None:
             self.__init_param(self.run_config_path)
@@ -31,6 +32,7 @@ class TrialRunner(object):
         self.tune_config = self.run_config["tune_config"]
         self.local_dir = self.tune_run_config["local_dir"]
         self.model_name = self.algo_config["model_name"]
+        self.data_info = self.run_config["data_info"]
         self.concrete_mode = ConcreteModelFactory(self.model_name)
 
     def set_run_config(self, run_config):
@@ -42,7 +44,12 @@ class TrialRunner(object):
         return _model
 
     def __get_datasets(self):
-        minimal_data = TabularMinimal()
+
+        if self.data_info["data_type"] == "tabular":
+            minimal_data = TabularMinimal()
+        elif self.data_info["data_type"]  == "2d":
+            minimal_data = ImageDataset(self.data_info["train_path"],
+                                        self.data_info["test_path"])
         return minimal_data
 
     def __get_search_space(self):

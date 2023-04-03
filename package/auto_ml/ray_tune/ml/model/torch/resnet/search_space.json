@@ -1,5 +1,6 @@
 {
-    "epochs": {"_type":"randint","_value":[30,31]},
+    "epochs": {"_type":"randint","_value":[10,11]},
     "learning_rate": {"_type":"uniform","_value":[0.0001, 0.01]},
+    "momentum": {"_type":"uniform","_value":[0.9, 0.99]},
     "batch_size": {"_type":"randint","_value":[16,17]}
 }

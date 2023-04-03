@@ -1,0 +1,22 @@
+{
+  "max_experiment_duration": 200,
+  "max_concurrent_trials": 4,
+  "max_trial_number": 6,
+  "local_dir": "/Users/tianjian/Projects/python-BasicUsage2/package/auto_ml/ray_tune/ml/example/tmp_result",
+  "data_info": {
+      "data_type": "2d",
+      "train_path": "/Users/tianjian/Projects/python-BasicUsage2/package/PyTorch/cnn/data/imgs_test",
+      "test_path": "/Users/tianjian/Projects/python-BasicUsage2/package/PyTorch/cnn/data/imgs_test"
+    },
+  "algo_config": {
+    "model_type": "classifier",
+    "include": [
+      "Resnet18",
+      "Resnet34"
+    ],
+    "optional_algorithm": [
+      "Resnet18",
+      "Resnet34"
+    ]
+  }
+}

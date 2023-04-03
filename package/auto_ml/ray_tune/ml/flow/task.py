@@ -1,27 +1,10 @@
 import json
 import os.path
-from datasets import TabularMinimal
+from datasets import TabularMinimal, ImageDataset
+from flow.algo_config import AlgoConfig
 from utils.plt import plt_scatter, plt_nn_learning_curve
 from flow.trial_runner import TrialRunner
 from flow.template import get_trial_runner_template
-
-
-class AlgoConfig:
-    def __init__(self, model_type, include, optional_algorithm):
-        self.model_type = model_type
-        self.include = include
-        self.optional_algorithm = optional_algorithm
-
-    def check_algorithm(self):
-        optional_algorithm = [i.lower() for i in self.optional_algorithm]
-        for algo in self.include:
-            if algo.lower() not in optional_algorithm:
-                raise ValueError("algorithm {} "
-                                 "not in {}".format(algo, self.optional_algorithm))
-
-
-class TaskQueues:
-    pass
 
 
 class ModelTask(object):
@@ -29,6 +12,7 @@ class ModelTask(object):
         self.run_config = None
         self.algo_config: AlgoConfig = None
         self.local_dir = None
+        self.data_info = None
         self.max_experiment_duration = None
         self.max_concurrent_trials = None
         self.__init_param(run_config_path)
@@ -53,10 +37,16 @@ class ModelTask(object):
         self.max_concurrent_trials = self.run_config["max_concurrent_trials"]
         self.max_trial_number = self.run_config["max_trial_number"]
         self.local_dir = self.run_config["local_dir"]
+        self.data_info = self.run_config["data_info"]
 
-    @staticmethod
-    def get_datasets():
-        minimal_data = TabularMinimal()
+    def get_datasets(self):
+        if self.data_info["data_type"] == "tabular":
+            minimal_data = TabularMinimal()
+        elif self.data_info["data_type"] == "2d":
+            minimal_data = ImageDataset(self.data_info["train_path"],
+                                        self.data_info["test_path"])
+        else:
+            raise TypeError
         return minimal_data
 
     def __get_params_json(self, run_config_path):
@@ -76,6 +66,7 @@ class ModelTask(object):
             run_config_template["run_config"]["stop"]["timeout_stopper"]["timeout"] = per_experiment_duration
             run_config_template["algo_config"]["model_name"] = sub_model
             run_config_template["tune_config"]["num_samples"] = per_max_trial_number
+            run_config_template["data_info"] = self.data_info
             sub_trial_runner = TrialRunner()
             sub_trial_runner.set_run_config(run_config_template)
             sub_trial_runner.fit()

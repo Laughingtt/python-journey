@@ -61,9 +61,29 @@ class FCNN(AbstractProductA, ABC):
         return search_space()
 
 
+class Resnet18(AbstractProductA, ABC):
+    @staticmethod
+    def create():
+        from model.torch.resnet.api import train_resnet18
+        return train_resnet18
+
+    def params_space(self):
+        from model.torch.resnet.api import search_space
+        return search_space()
+
+
+class Resnet34(Resnet18):
+    @staticmethod
+    def create():
+        from model.torch.resnet.api import train_resnet34
+        return train_resnet34
+
+
 class ModelStateConf(object):
     def __init__(self):
         self.logisticregression = "LogisticRegression"
         self.xgboost = "Xgboost"
         self.randomforest = "RandomForest"
         self.fcnn = "FCNN"
+        self.resnet18 = "Resnet18"
+        self.resnet34 = "Resnet34"

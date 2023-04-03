@@ -3,6 +3,11 @@
   "max_concurrent_trials": 4,
   "max_trial_number": 300,
   "local_dir": "/Users/tianjian/Projects/python-BasicUsage2/package/auto_ml/ray_tune/ml/example/tmp_result",
+  "data_info": {
+      "data_type": "tabular",
+      "train_path": "",
+      "test_path": ""
+    },
   "algo_config": {
     "model_type": "classifier",
     "include": [

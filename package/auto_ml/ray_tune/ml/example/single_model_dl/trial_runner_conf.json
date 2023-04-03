@@ -1,13 +1,12 @@
 {
   "data_info": {
-      "data_type": "tabular",
+      "data_type": "2d",
       "train_path": "/Users/tianjian/Projects/python-BasicUsage2/package/PyTorch/cnn/data/imgs_test",
-      "test_path": "/Users/tianjian/Projects/python-BasicUsage2/package/PyTorch/cnn/data/imgs_test",
-      "batch_size": 32
+      "test_path": "/Users/tianjian/Projects/python-BasicUsage2/package/PyTorch/cnn/data/imgs_test"
     },
   "tune_config": {
     "mode": "max",
-    "num_samples": 25,
+    "num_samples": 4,
     "max_concurrent_trials": 2,
     "search_alg": null,
     "scheduler": "FIFO"
@@ -15,22 +14,28 @@
   "run_config": {
     "local_dir": "/Users/tianjian/Projects/python-BasicUsage2/package/auto_ml/ray_tune/ml/example/tmp_result",
     "stop": {
-      "timeout_stopper": {"is_check": true,"timeout": 30},
-      "trial_plateau_stopper": {"is_check": false,"metric": "score","num_results": 5}
+      "timeout_stopper": {
+        "is_check": true,
+        "timeout": 60
+      },
+      "trial_plateau_stopper": {
+        "is_check": false,
+        "metric": "score",
+        "num_results": 5
+      }
     },
     "callbacks": null
   },
   "algo_config": {
     "model_type": "classifier",
-    "model_name": "RandomForest",
+    "model_name": "Resnet18",
     "include": [
-      "LogisticRegression",
-      "Xgboost"
+      "Resnet18",
+      "Resnet34"
     ],
     "optional_algorithm": [
-      "LogisticRegression",
-      "Xgboost",
-      "RandomForest"
+      "Resnet18",
+      "Resnet34"
     ]
   }
 }
