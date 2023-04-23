@@ -87,7 +87,7 @@ def train_mnist(config):
 
     optimizer = optim.SGD(
         model.parameters(), lr=config["lr"], momentum=config["momentum"])
-    for i in range(10):
+    for i in range(50):
         train(model, optimizer, train_loader)
         acc = test(model, test_loader)
 
@@ -110,11 +110,12 @@ search_space = {
 # Download the dataset first
 datasets.MNIST("~/data", train=True, download=True)
 
+trainable_with_resources = tune.with_resources(train_mnist, {"gpu": 1})
 tuner = tune.Tuner(
-    train_mnist,
+    trainable_with_resources,
     param_space=search_space,
     tune_config=tune.TuneConfig(
-        num_samples=20,
+        num_samples=100,
         scheduler=ASHAScheduler(metric="mean_accuracy", mode="max"),
     )
 )

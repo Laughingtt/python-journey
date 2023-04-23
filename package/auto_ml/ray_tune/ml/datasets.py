@@ -238,7 +238,7 @@ def torch_show_img(pic):
 
 if __name__ == '__main__':
     train_dataloader, _ = get_img_data_loader(
-        "/Users/tianjian/Projects/python-BasicUsage2/package/PyTorch/cnn/data/imgs",
-        "/Users/tianjian/Projects/python-BasicUsage2/package/PyTorch/cnn/data/imgs")
+        "/package/PyTorch/net/cnn/data/imgs",
+        "/package/PyTorch/net/cnn/data/imgs")
     for d, label in train_dataloader:
         print(d.shape, label.shape)

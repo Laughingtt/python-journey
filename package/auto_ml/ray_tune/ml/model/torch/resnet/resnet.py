@@ -81,8 +81,8 @@ def train_mnist(config):
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
     train_loader, test_loader = get_img_data_loader(
-        "/Users/tianjian/Projects/python-BasicUsage2/package/PyTorch/cnn/data/imgs_test",
-        "/Users/tianjian/Projects/python-BasicUsage2/package/PyTorch/cnn/data/imgs_test",
+        "/package/PyTorch/net/cnn/data/imgs_test",
+        "/package/PyTorch/net/cnn/data/imgs_test",
         batch_size=64)
     model = get_resnet18().to(device)
 

@@ -50,6 +50,9 @@ class CNN(nn.Module):
 model = models.resnet18(pretrained=True)
 # model = CNN()
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
+
 # 实例化网络、损失函数和优化器
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.3, momentum=0.9)
