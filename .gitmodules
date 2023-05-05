@@ -1,0 +1,3 @@
+[submodule "算法/数据挖掘/team-learning-data-mining"]
+	path = 算法/数据挖掘/team-learning-data-mining
+	url = https://github.com/datawhalechina/team-learning-data-mining.git
