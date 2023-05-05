@@ -1,5 +1,5 @@
 
-from sklearn.ensemble import VotingClassifier
+from sklearn.ensemble import VotingClassifier,StackingClassifier
 from sklearn.datasets import load_iris
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
