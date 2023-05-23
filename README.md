@@ -37,3 +37,17 @@ Python 学习之旅
 --
 
 Python学习之旅是一个免费的Python学习路线图和学习资源仓库，旨在帮助Python初学者和中级开发者提高Python编程技能。如果您正在学习Python编程或想了解Python相关技术，请访问该仓库并开始您的学习之旅。
+
+
+获取
+--
+
+```shell
+git clone https://github.com/Laughingtt/python-journey.git
+```
+
+包括submodule 
+
+```shell
+git clone --recursive https://github.com/Laughingtt/python-journey.git
+```
