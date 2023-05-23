@@ -1,6 +1,6 @@
 [submodule "algorithm/数据挖掘/team-learning-data-mining"]
-	path = 算法/数据挖掘/team-learning-data-mining
+	path = algorithm/数据挖掘/team-learning-data-mining
 	url = https://github.com/datawhalechina/team-learning-data-mining.git
 [submodule "algorithm/深度学习/生成网络/pytorch-wgan"]
-	path = 算法/深度学习/生成网络/pytorch-wgan
+	path = algorithm/深度学习/生成网络/pytorch-wgan
 	url = https://github.com/Zeleni9/pytorch-wgan.git
