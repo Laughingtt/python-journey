@@ -4,3 +4,18 @@
 [submodule "algorithm/深度学习/生成网络/pytorch-wgan"]
 	path = algorithm/深度学习/生成网络/pytorch-wgan
 	url = https://github.com/Zeleni9/pytorch-wgan.git
+[submodule "projects/FATE"]
+	path = projects/FATE
+	url = https://github.com/FederatedAI/FATE.git
+[submodule "projects/DjangoProject"]
+	path = projects/DjangoProject
+	url = https://github.com/Laughingtt/DjangoProject.git
+[submodule "projects/secretflow"]
+	path = projects/secretflow
+	url = https://github.com/Laughingtt/secretflow.git
+[submodule "projects/PySyft"]
+	path = projects/PySyft
+	url = https://github.com/Laughingtt/PySyft.git
+[submodule "projects/fastapi-admin"]
+	path = projects/fastapi-admin
+	url = https://github.com/Laughingtt/fastapi-admin.git
