@@ -19,3 +19,6 @@
 [submodule "projects/fastapi-admin"]
 	path = projects/fastapi-admin
 	url = https://github.com/Laughingtt/fastapi-admin.git
+[submodule "data_driven_computing/sql/sql50"]
+	path = data_driven_computing/sql/sql50
+	url = https://github.com/bladeXue/sql50.git
