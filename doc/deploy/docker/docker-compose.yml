@@ -1,0 +1,20 @@
+services:
+   chatglm:
+      image: sdataft/algo/model:v1
+      container_name: chatglm
+      command: ["tail","-f","/dev/null"]
+      ports:
+        - 9870:9870
+      env_file:
+        - ./config.env
+      environment:
+          ENV_NAME: "env_name"
+      volumes:
+        - ./data:/data
+      deploy:
+        resources:
+          reservations:
+            devices:
+              - driver: nvidia
+                count: all
+                capabilities: [ gpu ]
