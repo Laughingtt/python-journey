@@ -1,5 +1,32 @@
 # SQL语法
 
+<!-- TOC -->
+* [SQL语法](#sql语法)
+  * [类型解释](#类型解释)
+  * [一、DDL](#一ddl)
+  * [二、DML](#二dml)
+  * [三、DCL](#三dcl)
+  * [四、DQL](#四dql)
+    * [4.1条件查询](#41条件查询)
+    * [4.2模糊查询](#42模糊查询)
+    * [4.3字段控制查询](#43字段控制查询)
+    * [4.4 排序](#44-排序)
+    * [4.5 聚合函数](#45-聚合函数)
+    * [4.6 分组(GROUP BY)查询](#46-分组group-by查询)
+    * [4.7 HAVING子句](#47-having子句)
+    * [4.8 LIMIT](#48-limit)
+    * [4.9 完整性约束](#49-完整性约束)
+      * [4.9.1 主键 ：primary key](#491-主键-primary-key)
+      * [4.9.2 主键自增长 ：auto_increment（主键必须是整型才可以自增长）](#492-主键自增长-autoincrement主键必须是整型才可以自增长)
+      * [4.9.3 非空：NOT NULL](#493-非空not-null)
+      * [4.9.4 唯一：UNIQUE](#494-唯一unique)
+      * [4.9.5 外键](#495-外键)
+    * [5 完整性约束](#5-完整性约束)
+      * [5.1 合并结果集](#51-合并结果集)
+      * [5.2 连接查询](#52-连接查询)
+<!-- TOC -->
+## 类型解释
+
 * DDL（Data Definition Language）：数据定义语言，用来定义数据库对象：库、表、列等；
 * DML（Data Manipulation Language）:数据操作语言，用来定义数据库记录（数据）；
 * DCL（Data Control Language）：数据控制语言，用来定义访问权限和安全级别；
@@ -115,7 +142,8 @@ USER user2@
 ’; 
 -- 给用户授权: GRANT 权限1, … , 权限n ON 数据库.* TO 用户名
 GRANT CREATE
-,ALTER,DROP,INSERT,UPDATE,DELETE,SELECT ON mydb1.* TO user1@localhost;
+,ALTER
+,DROP,INSERT,UPDATE,DELETE,SELECT ON mydb1.* TO user1@localhost;
 GRANT ALL
 ON mydb1.* TO user2@localhost;
 -- 撤销授权: REVOKE权限1, … , 权限n ON 数据库.* FORM 用户名
@@ -331,7 +359,7 @@ FOREIGN KEY fk_t_user;
 
 #### 5.2 连接查询
 
-内连接：
+1. 内连接：
 
 ```sql
 -- # 方言版
@@ -346,7 +374,7 @@ FROM emp e
                     ON e.deptno = d.deptno;
 ```
 
-左连接：
+2. 左连接：
 
 ```sql
 SELECT *
@@ -355,7 +383,7 @@ FROM emp e
                          ON e.deptno = d.deptno;
 ```
 
-右连接:
+3. 右连接:
 
 ```sql
 SELECT *
@@ -364,7 +392,7 @@ FROM emp e
                           ON e.deptno = d.deptno;
 ```
 
-自然连接:
+4. 自然连接:
 
 ```sql
 SELECT *
@@ -378,7 +406,7 @@ FROM emp
          NATURAL RIGHT JOIN dept;
 ```
 
-子查询
+5. 子查询
 
 嵌套查询，即SELECT中包含SELECT，如果一条语句中存在两个，或两个以上SELECT，那么就是子查询语句了。
 
