@@ -1,0 +1,14 @@
+services:
+  airflow:
+    image: sdataft/airflow:v1
+    container_name: airflow
+    ports:
+      - 18080:18080
+    env_file:
+      - ./config.env
+    ENV_NAME: "airflow"
+    volumes:
+      - ./data:/data
+      - ./dags:/opt/airflow/dags
+      - ./airflow.cfg:/opt/airflow/airflow.cfg
+      - ./logs:/opt/airflow/logs

@@ -1,0 +1,57 @@
+stages:
+  - docker
+  - deploy
+
+
+build_docker:
+  stage: docker
+  image:
+    name: docker:git
+  #only:
+  #  - tags
+  before_script:
+    - export git_version=`git describe --tags --always --dirty="-dev" --first-parent`
+    - echo "build version:" $git_version
+    - echo $git_version > git_version.txt
+  script:
+    - echo $repo_pwd | docker login --username $repo_user --password-stdin $repo_host
+    - docker build --no-cache -f Dockerfile --build-arg version=$git_version -t $repo_host/test/farseer-dataflow:$git_version .
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+      - git_version.txt
+    policy: pull
+  only:
+   - tags
+  tags:
+    - build
+
+deploy_image:
+  stage: deploy
+  needs:
+    - build_docker
+  image:
+      name: docker:git
+  before_script:
+    - export git_version=`git describe --tags --always --dirty="-dev" --first-parent`
+    - echo "build version:" $git_version
+    - echo $git_version > git_version.txt
+  script:
+    # 推送镜像到生产制品库
+    - docker tag $repo_host/test/farseer-dataflow:$git_version $reg_host/test/farseer-dataflow:$git_version
+    - echo $reg_pwd | docker login --username $reg_user --password-stdin $reg_host
+    - docker push $reg_host/test/farseer-dataflow:$git_version
+    - docker rmi $reg_host/test/farseer-dataflow:$git_version
+    # 推送镜像到开发制品库
+    - echo $repo_pwd | docker login --username $repo_user --password-stdin $repo_host
+    - docker push $repo_host/test/farseer-dataflow:$git_version
+    - docker rmi $repo_host/test/farseer-dataflow:$git_version
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+      - git_version.txt
+    policy: pull
+  only:
+   - tags
+  tags:
+    - build

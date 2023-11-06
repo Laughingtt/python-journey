@@ -1,0 +1,13 @@
+__pycache__/
+.vscode/
+.git/
+.pyc
+.idea
+main.build
+main.dist
+main.onefile-build
+*.exe
+cryptobox.build
+cryptobox.dist
+cryptobox.onefile-build
+cryptobox.zip

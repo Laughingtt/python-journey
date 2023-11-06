@@ -1,0 +1,17 @@
+# deb http://snapshot.debian.org/archive/debian/20230904T000000Z bullseye main
+deb http://deb.debian.org/debian bullseye main
+# deb http://snapshot.debian.org/archive/debian-security/20230904T000000Z bullseye-security main
+deb http://deb.debian.org/debian-security bullseye-security main
+# deb http://snapshot.debian.org/archive/debian/20230904T000000Z bullseye-updates main
+deb http://deb.debian.org/debian bullseye-updates main
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse

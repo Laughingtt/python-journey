@@ -1,0 +1,18 @@
+FROM apache/airflow:2.7.1-python3.10
+USER root
+COPY source.list /etc/apt/sources.list
+COPY /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia
+COPY /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN apt update -y --fix-missing\
+  && apt install -y --no-install-recommends vim --fix-missing\
+  && apt autoremove -yqq --purge --fix-missing\
+  && apt install python3-dev build-essential --fix-missing\
+  && apt install libssl1.1 --fix-missing\
+  && apt install libssl1.1=1.1.1f-1ubuntu2 --fix-missing \
+  && apt install libssl-dev --fix-missing\
+  && apt install libmysqlclient-dev --fix-missing\
+  && apt install pkg-config --fix-missing\
+  && apt clean \
+  && rm -rf /var/lib/apt/lists/* \
+  && sudo pip install mysqlclient -i https://pypi.tuna.tsinghua.edu.cn/simple \
+  && sudo pip install apache-airflow-providers-mysql  -i https://pypi.tuna.tsinghua.edu.cn/simple
