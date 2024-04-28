@@ -22,3 +22,6 @@
 [submodule "data_driven_computing/sql/sql50"]
 	path = data_driven_computing/sql/sql50
 	url = https://github.com/bladeXue/sql50.git
+[submodule "projects/QuantumMinds"]
+	path = projects/QuantumMinds
+	url = git@github.com:Laughingtt/QuantumMinds.git
