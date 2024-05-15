@@ -1,4 +1,4 @@
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score,precision_recall_curve
 
 # 预测标签和真实标签
 y_true = [0, 1, 0, 1, 1, 0, 1, 1]
