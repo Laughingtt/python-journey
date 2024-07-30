@@ -5,7 +5,7 @@ import json
 import requests
 
 def call_model(prompt):
-    token = '24.3ff0f6f5f42ed17f4aded8d5052c8dca.2592000.1712924215.282335-55619291'
+    token = ''
     url = 'https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie-lite-8k'
     url += '?access_token=' + token
 
