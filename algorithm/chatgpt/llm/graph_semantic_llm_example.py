@@ -1,13 +1,3 @@
-from typing import Optional, Type
-
-from langchain.callbacks.manager import (
-    AsyncCallbackManagerForToolRun,
-    CallbackManagerForToolRun,
-)
-
-# 导入通用所需的内容
-from langchain.pydantic_v1 import BaseModel, Field
-from langchain.tools import BaseTool
 
 """
 实现的函数是用于检索有关电影或演员的信息。
@@ -98,7 +88,7 @@ from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.utils.function_calling import convert_to_openai_function
 from langchain_openai import ChatOpenAI
 
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+# llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
 tools = [InformationTool()]
 
 llm_with_tools = llm.bind(functions=[convert_to_openai_function(t) for t in tools])
@@ -106,8 +96,25 @@ llm_with_tools = llm.bind(functions=[convert_to_openai_function(t) for t in tool
 
 from langchain.agents import AgentExecutor
 from langchain.agents import create_tool_calling_agent
+from langchain import hub
 
 
+prompt = """
+SYSTEM
+
+You are a helpful assistant
+
+PLACEHOLDER
+
+chat_history
+HUMAN
+
+{input}
+
+PLACEHOLDER
+agent_scratchpad
+
+"""
 agent = create_tool_calling_agent(llm, tools, prompt)
 
 
