@@ -24,6 +24,7 @@ print('Database version:', data)
 cursor.close()
 conn.close()
 
+"""
 
 # 创建用户
 CREATE USER 'test'@'%' IDENTIFIED BY 'test';
@@ -52,3 +53,5 @@ mysql -u root   回车
 use mysql
 alter user 'root'@'localhost' identified with mysql_native_password by '123456';      --修改密码为123456
 
+
+"""
