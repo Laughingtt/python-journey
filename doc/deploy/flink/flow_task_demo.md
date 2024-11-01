@@ -48,7 +48,68 @@ WITH ( 'connector' = 'kafka',
     'format' = 'csv');
 
 -- 查询统计
-select behavior, user_id, count(*) as cnt
+select user_id,behavior, count(*) as cnt
 from KafkaTable
-group by behavior, user_id
+group by user_id,behavior
 ```
+
+5. 创建JDBC接收flink sink数据
+
+mysql 创建表
+```sql
+CREATE TABLE sink_user
+(
+    `user_id` int,
+    `behavior` varchar(30),
+    `cnt` int
+)
+
+-- 设定主键
+CREATE TABLE sink_user
+(
+    `user_id` int,
+    `behavior` varchar(30),
+    `cnt` int,
+    primary key (user_id,behavior)
+)
+
+```
+
+flink sql client 新建连接表
+```sql
+CREATE TABLE sink_user (
+    `user_id` BIGINT,
+    `behavior` STRING,
+    `cnt` BIGINT,
+    PRIMARY KEY (user_id,behavior) NOT ENFORCED
+) WITH (
+    'connector' = 'jdbc',
+    'url' = 'jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false',
+   'table-name' = 'sink_user',
+    'username' = 'test', -- 用户名
+    'password' = 'test' -- 密码
+);
+```
+
+flink消费kafka的数据写入到mysql中
+```sql
+insert into sink_user
+select user_id,behavior, count(*) as cnt
+from KafkaTable
+group by user_id,behavior;
+```
+
+查看mysql表数据
+```sql
+mysql> select * from sink_user;
++---------+----------+------+
+| user_id | behavior | cnt  |
++---------+----------+------+
+|       3 | chlis    |    1 |
+|       1 | buy      |    4 |
+|       2 | browse   |    1 |
+|       1 | buy      |    5 |
+|       1 | buy      |    6 |
++---------+----------+------+
+```
+没有建立主键表所以统计的数据以新增的方式进行累计,按照分组统计，设定主键
