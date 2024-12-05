@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+
+  ####
+  ## add new worker node
+  ####
+  worker3:
+    image: apache/seatunnel
+    container_name: seatunnel_worker_3
+    environment:
+      - ST_DOCKER_MEMBER_LIST=172.16.0.2,172.16.0.3,172.16.0.4,172.16.0.5 # add ip to here
+    entrypoint: >
+      /bin/sh -c "
+      /opt/seatunnel/bin/seatunnel-cluster.sh -r worker
+      "
+    networks:
+      sealtune_seatunnel_network:
+        ipv4_address: 172.16.0.5        # use a not used ip
+
+networks:
+  sealtune_seatunnel_network:
+    external: true
