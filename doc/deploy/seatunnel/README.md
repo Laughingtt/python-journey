@@ -3,9 +3,11 @@
 https://seatunnel.apache.org/docs/2.3.8/start-v2/docker/
 
 ## SOURCE
+
 https://seatunnel.apache.org/docs/2.3.8/connector-v2/source/Jdbc
 
 ## SINK
+
 https://seatunnel.apache.org/docs/2.3.8/connector-v2/sink/Jdbc
 
 ### Docker部署
@@ -136,6 +138,22 @@ docker run --name seatunnel_client \
 
 ```
 
+## binlog权限
+以下是权限授予的 SQL 语句：
+
+sql
+复制代码
+```sql
+GRANT REPLICATION CLIENT, REPLICATION SLAVE ON *.* TO 'your_user'@'your_host';
+FLUSH PRIVILEGES;
+```
+权限解释：
+REPLICATION CLIENT：允许用户执行 SHOW MASTER STATUS，以查看当前的 binlog 文件名和位置。
+REPLICATION SLAVE：允许用户读取 binlog 内容，用于 Flink 等工具进行数据同步。
+如果希望更小化权限，可以根据实际需求细化权限，确保用户只访问必要的数据库和资源。例如，如果只需要在特定数据库中读取 binlog，可以替换 *.* 为特定数据库名。
+
+完成权限授予后，确保 MySQL binlog 设置正确（即启用了 binlog），并且使用的 MySQL 账户配置正确。
+
 ## 测试样本SQL验证CDC模式
 
 ```sql
@@ -146,30 +164,51 @@ CREATE TABLE IF NOT EXISTS pk_table
     PRIMARY KEY (id)            -- 设置id为主键
 );
 
+CREATE TABLE IF NOT EXISTS pk_table2
+(
+    pid  INT AUTO_INCREMENT,    -- 自动递增的整数ID
+    name VARCHAR(255) NOT NULL, -- 名称字段，最大长度为255个字符，不允许为空
+    PRIMARY KEY (pid)           -- 设置id为主键
+);
+
 INSERT INTO pk_table (name)
-VALUES ('Alice');
+VALUES ('Alice'),
+       ('Bob');
+
+
 INSERT INTO pk_table (name)
-VALUES ('Bob');
-INSERT INTO pk_table (name)
-VALUES ('Charlie');
-INSERT INTO pk_table (name)
-VALUES ('Diana');
+VALUES ('Charlie'),
+       ('Diana');
+
+INSERT INTO pk_table2 (name)
+VALUES ('Alice'),
+       ('Bob');
+
+
+INSERT INTO pk_table2 (name)
+VALUES ('Charlie'),
+       ('Diana');
+
 
 -- 向表中添加年龄字段
 ALTER TABLE pk_table
     ADD COLUMN age INT;
 
+ALTER TABLE pk_table2
+    ADD COLUMN age INT;
 
 -- 插入带有年龄的数据
 INSERT INTO pk_table (name, age)
-VALUES ('Alice', 30);
-INSERT INTO pk_table (name, age)
-VALUES ('Bob', 22);
-INSERT INTO pk_table (name, age)
-VALUES ('Charlie', 45);
-INSERT INTO pk_table (name, age)
-VALUES ('Diana', 28);
+VALUES ('Alice', 30),
+       ('Bob', 22),
+       ('Charlie', 45),
+       ('Diana', 28);
 
+INSERT INTO pk_table2 (name, age)
+VALUES ('Alice', 30),
+       ('Bob', 22),
+       ('Charlie', 45),
+       ('Diana', 28);
 
 ```
 

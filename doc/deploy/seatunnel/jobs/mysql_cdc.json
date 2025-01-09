@@ -1,0 +1,42 @@
+{
+  "env": {
+    "parallelism": 5,
+    "job.mode": "STREAMING",
+    "checkpoint.interval": 5000,
+    "read_limit.bytes_per_second": 7000000,
+    "read_limit.rows_per_second": 400
+  },
+  "source": [
+    {
+      "plugin_name": "MySQL-CDC",
+      "server-id": "5652-5657",
+      "username": "test",
+      "password": "test",
+      "table-names": [
+        "test.pk_table",
+        "test.pk_table2"
+      ],
+      "base-url": "jdbc:mysql://172.27.27.139:3306/test",
+      "debezium": {
+        "include.schema.changes": true
+      }
+    }
+  ],
+  "sink": [
+    {
+      "plugin_name": "jdbc",
+      "url": "jdbc:mysql://172.27.27.139:3306/test_sink",
+      "driver": "com.mysql.cj.jdbc.Driver",
+      "user": "test",
+      "password": "test",
+      "generate_sink_sql": true,
+      "database": "test_sink",
+      "table": "${table_name}",
+      "primary_keys": [
+        "${primary_key}"
+      ],
+      "is_exactly_once": true,
+      "xa_data_source_class_name": "com.mysql.cj.jdbc.MysqlXADataSource"
+    }
+  ]
+}
