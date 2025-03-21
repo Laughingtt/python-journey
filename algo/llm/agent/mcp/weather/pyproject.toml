@@ -1,0 +1,21 @@
+[project]
+name = "mcp-test"
+version = "0.1.0"
+description = "a"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+ "httpx>=0.28.1",
+ "mcp[cli]>=1.4.1",
+ "python-dotenv>=1.0.1",
+]
+[[project.authors]]
+name = "tianjian"
+email = "tianjian@sdataft.com"
+
+[build-system]
+requires = [ "hatchling",]
+build-backend = "hatchling.build"
+
+[project.scripts]
+mcp-test = "mcp_test:main"
